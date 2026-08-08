@@ -1,7 +1,7 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "pnpm install",
-  "buildCommand": "pnpm --filter @oasis/shared build && pnpm --filter @oasis/web build",
+  "buildCommand": "pnpm --filter @oasis/shared build && pnpm --filter @oasis/server bundle && pnpm --filter @oasis/web build",
   "outputDirectory": "apps/web/dist",
   "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
 }
