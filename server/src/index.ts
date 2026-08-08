@@ -1,8 +1,6 @@
 import cors from 'cors';
 import dotenv from 'dotenv';
 import express from 'express';
-import narrateRoute from './routes/narrate';
-import questionRoute from './routes/question';
 import turnRoute from './routes/turn';
 import dialogueRoute from './routes/dialogue';
 import tagRoute from './routes/tag';
@@ -23,8 +21,6 @@ app.get('/health', (_req, res) => {
   res.json({ ok: true });
 });
 
-app.use('/api/narrate', narrateRoute);
-app.use('/api/question', questionRoute);
 app.use('/api/turn', turnRoute);
 app.use('/api/dialogue', dialogueRoute);
 app.use('/api/tag', tagRoute);
