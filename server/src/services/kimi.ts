@@ -1,11 +1,12 @@
 import dotenv from 'dotenv';
 import OpenAI from 'openai';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { existsSync } from 'node:fs';
+import { resolve } from 'node:path';
 
-// 显式加载 server/.env（无论进程从哪个目录启动）
-dotenv.config({ path: resolve(dirname(fileURLToPath(import.meta.url)), '../../.env') });
-dotenv.config();
+// 加载 .env（本地开发；serverless 平台直接注入环境变量，找不到文件无碍）
+for (const p of [resolve(process.cwd(), '.env'), resolve(process.cwd(), 'server/.env')]) {
+  if (existsSync(p)) dotenv.config({ path: p });
+}
 
 const apiKey = process.env.DEEPSEEK_API_KEY ?? process.env.KIMI_API_KEY;
 const baseURL = process.env.DEEPSEEK_BASE_URL ?? process.env.KIMI_BASE_URL ?? 'https://api.deepseek.com/v1';
