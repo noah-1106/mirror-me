@@ -1,20 +1,18 @@
-// 临时调试版：启动失败时把真实错误写进响应（定位后恢复直连导出）
-let app: any;
+// server 是 ESM 包：必须动态 import（require 会 ERR_REQUIRE_ESM）
+const appPromise = import('../server/src/index').then((m) => m.default ?? m);
 let loadError: unknown = null;
-try {
-  // @vercel/node 输出 CJS，require 可用
-  app = require('../server/src/index').default;
-} catch (e) {
+appPromise.catch((e) => {
   loadError = e;
-}
+});
 
-export default function handler(req: any, res: any) {
+export default async function handler(req: any, res: any) {
   if (loadError) {
     res.statusCode = 500;
     res.setHeader('content-type', 'text/plain; charset=utf-8');
     res.end(`BOOT ERROR:\n${(loadError as Error)?.stack ?? String(loadError)}`);
     return;
   }
+  const app = await appPromise;
   return app(req, res);
 }
 
