@@ -16,6 +16,9 @@ const PHASE_HINT: Record<string, string> = {
 
 const MAX_RECORD_SECONDS = 20;
 
+/** 语音输入开关：线上（Vercel）无 sidecar，构建时以 VITE_ENABLE_VOICE=false 关闭说话按钮 */
+const VOICE_ENABLED = import.meta.env.VITE_ENABLE_VOICE !== 'false';
+
 /**
  * 语音输入：MediaRecorder 录音 → /api/asr（本地 FunASR）→ 引擎。
  * 不依赖浏览器 SpeechRecognition（其云端服务在国内不可用）。
@@ -166,17 +169,19 @@ export function VoiceInput() {
       <div className="rounded-full bg-black/45 px-4 py-1.5 text-sm font-light tracking-widest text-white/50 backdrop-blur-sm">{hint}</div>
       {phase === 'idle' && (
         <div className="pointer-events-auto flex w-full max-w-xl items-center gap-3 px-6">
-          <button
-            onClick={toggleRecording}
-            disabled={transcribing}
-            className={`rounded-full px-5 py-3 text-sm transition-colors ${
-              recording
-                ? 'animate-pulse bg-red-500/70 text-white'
-                : 'bg-white/10 text-white hover:bg-white/20'
-            }`}
-          >
-            {recording ? `停止 ${secondsLeft}s` : '说话'}
-          </button>
+          {VOICE_ENABLED && (
+            <button
+              onClick={toggleRecording}
+              disabled={transcribing}
+              className={`rounded-full px-5 py-3 text-sm transition-colors ${
+                recording
+                  ? 'animate-pulse bg-red-500/70 text-white'
+                  : 'bg-white/10 text-white hover:bg-white/20'
+              }`}
+            >
+              {recording ? `停止 ${secondsLeft}s` : '说话'}
+            </button>
+          )}
           <input
             type="text"
             value={text}
