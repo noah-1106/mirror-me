@@ -1,0 +1,415 @@
+{
+  "sessionId": "ca49b23a-a10c-4cf0-a8ab-d7b96244cd0e",
+  "updatedAt": "2026-08-08T19:28:34.795Z",
+  "history": [
+    {
+      "t": 1,
+      "transcript": "你好",
+      "pauseMs": 30558,
+      "durationMs": 6489,
+      "dimensions": [
+        "avoid"
+      ],
+      "basin": "avoid",
+      "selfReferential": false
+    }
+  ],
+  "profile": {
+    "selfReferRate": 0,
+    "dimensionDistribution": {
+      "energy": 0,
+      "relation": 0,
+      "confidence": 0,
+      "stress": 0,
+      "curiosity": 0
+    },
+    "hesitationPattern": {
+      "meanPause": 30558,
+      "stdPause": 0
+    },
+    "responseBasins": [
+      {
+        "id": "self",
+        "label": "自引",
+        "probability": 0
+      },
+      {
+        "id": "other",
+        "label": "他引",
+        "probability": 1
+      }
+    ]
+  },
+  "delta": 0.8267132048600137,
+  "tree": {
+    "branches": [
+      {
+        "parentId": null,
+        "growthT": 1,
+        "trajectoryLabel": "traj",
+        "basin": "self",
+        "vitality": 0.85,
+        "clarity": 0.4,
+        "length": 1,
+        "warmth": 0.9,
+        "withered": false,
+        "displayed": true,
+        "seed": 11,
+        "id": "b1"
+      },
+      {
+        "parentId": null,
+        "growthT": 1,
+        "trajectoryLabel": "traj",
+        "basin": "other",
+        "vitality": 0.6,
+        "clarity": 0.4,
+        "length": 0.8,
+        "warmth": 0.3,
+        "withered": false,
+        "displayed": true,
+        "seed": 12,
+        "id": "b2"
+      },
+      {
+        "parentId": null,
+        "growthT": 1,
+        "trajectoryLabel": "traj",
+        "basin": "avoid",
+        "vitality": 0.3,
+        "clarity": 0.35,
+        "length": 0.8,
+        "warmth": 0.1,
+        "withered": false,
+        "displayed": false,
+        "seed": 13,
+        "id": "b3"
+      },
+      {
+        "parentId": "b1",
+        "growthT": 2,
+        "trajectoryLabel": "traj",
+        "basin": "self",
+        "vitality": 0.75,
+        "clarity": 0.6,
+        "length": 0.75,
+        "warmth": 0.85,
+        "withered": false,
+        "displayed": true,
+        "seed": 24,
+        "id": "b4"
+      },
+      {
+        "parentId": "b2",
+        "growthT": 2,
+        "trajectoryLabel": "traj",
+        "basin": "other",
+        "vitality": 0.55,
+        "clarity": 0.55,
+        "length": 0.65,
+        "warmth": 0.2,
+        "withered": false,
+        "displayed": true,
+        "seed": 25,
+        "id": "b5"
+      },
+      {
+        "parentId": null,
+        "growthT": 2,
+        "trajectoryLabel": "traj",
+        "basin": "self",
+        "vitality": 0.5,
+        "clarity": 0.55,
+        "length": 0.6,
+        "warmth": 0.5,
+        "withered": false,
+        "displayed": true,
+        "seed": 26,
+        "id": "b6"
+      },
+      {
+        "parentId": "b1",
+        "growthT": 3,
+        "trajectoryLabel": "traj",
+        "basin": "avoid",
+        "vitality": 0.2,
+        "clarity": 0.2,
+        "length": 0.5,
+        "warmth": 0,
+        "withered": true,
+        "displayed": true,
+        "seed": 37,
+        "id": "b7"
+      },
+      {
+        "parentId": "b2",
+        "growthT": 3,
+        "trajectoryLabel": "traj",
+        "basin": "self",
+        "vitality": 0.45,
+        "clarity": 0.5,
+        "length": 0.55,
+        "warmth": 0.4,
+        "withered": false,
+        "displayed": true,
+        "seed": 38,
+        "id": "b8"
+      },
+      {
+        "parentId": "b6",
+        "growthT": 3,
+        "trajectoryLabel": "traj",
+        "basin": "self",
+        "vitality": 0.5,
+        "clarity": 0.5,
+        "length": 0.55,
+        "warmth": 0.6,
+        "withered": false,
+        "displayed": true,
+        "seed": 39,
+        "id": "b9"
+      },
+      {
+        "id": "t1-0",
+        "parentId": "b8",
+        "growthT": 1,
+        "trajectoryLabel": "turn-1",
+        "basin": "avoid",
+        "vitality": 0.2,
+        "clarity": 0.17328679513998635,
+        "length": 0.5039720770839918,
+        "warmth": 0.05,
+        "withered": false,
+        "displayed": true,
+        "seed": 7932
+      },
+      {
+        "id": "t1-1",
+        "parentId": "b9",
+        "growthT": 1,
+        "trajectoryLabel": "turn-1",
+        "basin": "avoid",
+        "vitality": 0.2,
+        "clarity": 0.17328679513998635,
+        "length": 0.5039720770839918,
+        "warmth": 0.05,
+        "withered": false,
+        "displayed": true,
+        "seed": 8033
+      },
+      {
+        "id": "t1-2",
+        "parentId": "b4",
+        "growthT": 1,
+        "trajectoryLabel": "turn-1",
+        "basin": "avoid",
+        "vitality": 0.2,
+        "clarity": 0.17328679513998635,
+        "length": 0.5039720770839918,
+        "warmth": 0.05,
+        "withered": false,
+        "displayed": true,
+        "seed": 8134
+      }
+    ],
+    "events": [
+      {
+        "t": 1,
+        "converged": true,
+        "delta": 0.6,
+        "newBranches": [
+          {
+            "parentId": null,
+            "growthT": 1,
+            "trajectoryLabel": "traj",
+            "basin": "self",
+            "vitality": 0.85,
+            "clarity": 0.4,
+            "length": 1,
+            "warmth": 0.9,
+            "withered": false,
+            "displayed": true,
+            "seed": 11,
+            "id": "b1"
+          },
+          {
+            "parentId": null,
+            "growthT": 1,
+            "trajectoryLabel": "traj",
+            "basin": "other",
+            "vitality": 0.6,
+            "clarity": 0.4,
+            "length": 0.8,
+            "warmth": 0.3,
+            "withered": false,
+            "displayed": true,
+            "seed": 12,
+            "id": "b2"
+          },
+          {
+            "parentId": null,
+            "growthT": 1,
+            "trajectoryLabel": "traj",
+            "basin": "avoid",
+            "vitality": 0.3,
+            "clarity": 0.35,
+            "length": 0.8,
+            "warmth": 0.1,
+            "withered": false,
+            "displayed": false,
+            "seed": 13,
+            "id": "b3"
+          }
+        ]
+      },
+      {
+        "t": 2,
+        "converged": true,
+        "delta": 0.4,
+        "newBranches": [
+          {
+            "parentId": "b1",
+            "growthT": 2,
+            "trajectoryLabel": "traj",
+            "basin": "self",
+            "vitality": 0.75,
+            "clarity": 0.6,
+            "length": 0.75,
+            "warmth": 0.85,
+            "withered": false,
+            "displayed": true,
+            "seed": 24,
+            "id": "b4"
+          },
+          {
+            "parentId": "b2",
+            "growthT": 2,
+            "trajectoryLabel": "traj",
+            "basin": "other",
+            "vitality": 0.55,
+            "clarity": 0.55,
+            "length": 0.65,
+            "warmth": 0.2,
+            "withered": false,
+            "displayed": true,
+            "seed": 25,
+            "id": "b5"
+          },
+          {
+            "parentId": null,
+            "growthT": 2,
+            "trajectoryLabel": "traj",
+            "basin": "self",
+            "vitality": 0.5,
+            "clarity": 0.55,
+            "length": 0.6,
+            "warmth": 0.5,
+            "withered": false,
+            "displayed": true,
+            "seed": 26,
+            "id": "b6"
+          }
+        ]
+      },
+      {
+        "t": 3,
+        "converged": false,
+        "delta": 0.95,
+        "newBranches": [
+          {
+            "parentId": "b1",
+            "growthT": 3,
+            "trajectoryLabel": "traj",
+            "basin": "avoid",
+            "vitality": 0.2,
+            "clarity": 0.2,
+            "length": 0.5,
+            "warmth": 0,
+            "withered": true,
+            "displayed": true,
+            "seed": 37,
+            "id": "b7"
+          },
+          {
+            "parentId": "b2",
+            "growthT": 3,
+            "trajectoryLabel": "traj",
+            "basin": "self",
+            "vitality": 0.45,
+            "clarity": 0.5,
+            "length": 0.55,
+            "warmth": 0.4,
+            "withered": false,
+            "displayed": true,
+            "seed": 38,
+            "id": "b8"
+          },
+          {
+            "parentId": "b6",
+            "growthT": 3,
+            "trajectoryLabel": "traj",
+            "basin": "self",
+            "vitality": 0.5,
+            "clarity": 0.5,
+            "length": 0.55,
+            "warmth": 0.6,
+            "withered": false,
+            "displayed": true,
+            "seed": 39,
+            "id": "b9"
+          }
+        ]
+      },
+      {
+        "t": 1,
+        "converged": true,
+        "delta": 0.8267132048600137,
+        "newBranches": [
+          {
+            "id": "t1-0",
+            "parentId": "b8",
+            "growthT": 1,
+            "trajectoryLabel": "turn-1",
+            "basin": "avoid",
+            "vitality": 0.2,
+            "clarity": 0.17328679513998635,
+            "length": 0.5039720770839918,
+            "warmth": 0.05,
+            "withered": false,
+            "displayed": true,
+            "seed": 7932
+          },
+          {
+            "id": "t1-1",
+            "parentId": "b9",
+            "growthT": 1,
+            "trajectoryLabel": "turn-1",
+            "basin": "avoid",
+            "vitality": 0.2,
+            "clarity": 0.17328679513998635,
+            "length": 0.5039720770839918,
+            "warmth": 0.05,
+            "withered": false,
+            "displayed": true,
+            "seed": 8033
+          },
+          {
+            "id": "t1-2",
+            "parentId": "b4",
+            "growthT": 1,
+            "trajectoryLabel": "turn-1",
+            "basin": "avoid",
+            "vitality": 0.2,
+            "clarity": 0.17328679513998635,
+            "length": 0.5039720770839918,
+            "warmth": 0.05,
+            "withered": false,
+            "displayed": true,
+            "seed": 8134
+          }
+        ]
+      }
+    ]
+  },
+  "convergeCount": 1
+}

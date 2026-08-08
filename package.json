@@ -1,0 +1,19 @@
+{
+  "name": "oasis-future-self",
+  "private": true,
+  "version": "0.1.0",
+  "description": "与未来的自己对话 — OASIS 式世界引擎黑客松项目",
+  "scripts": {
+    "dev": "concurrently \"pnpm dev:server\" \"pnpm dev:web\"",
+    "dev:web": "pnpm --filter @oasis/web dev",
+    "dev:server": "pnpm --filter @oasis/server dev",
+    "build": "pnpm --filter @oasis/shared build && pnpm --filter @oasis/web build && pnpm --filter @oasis/server build",
+    "typecheck": "pnpm --filter @oasis/web typecheck && pnpm --filter @oasis/server typecheck",
+    "start": "pnpm --filter @oasis/server start"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "typescript": "^5.5.0"
+  },
+  "packageManager": "pnpm@11.20.0"
+}

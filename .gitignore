@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+*.local
+
+# python sidecar
+sidecar/venv/
+sidecar/__pycache__/
+sidecar/models/
+sidecar/vendor/
+sidecar/asset/
+
+# os
+.DS_Store
