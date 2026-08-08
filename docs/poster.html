@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<title>Mirror Me · 摆摊海报（A4 纵向，浏览器直接打印成 PDF）</title>
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 210mm; height: 297mm; }
+  body {
+    font-family: 'Songti SC', 'STSong', 'Noto Serif SC', serif;
+    background: #060b14;
+    color: #eaf4ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: hidden;
+    position: relative;
+  }
+  /* 顶部产品名 */
+  .brand {
+    margin-top: 14mm;
+    display: flex;
+    align-items: center;
+    gap: 4mm;
+    letter-spacing: 0.5em;
+    font-size: 11pt;
+    color: rgba(191, 227, 255, 0.65);
+  }
+  .brand .dot {
+    width: 3mm; height: 3mm; border-radius: 50%;
+    background: #bfe3ff;
+    box-shadow: 0 0 6mm rgba(191, 227, 255, 0.9);
+  }
+  .brand .name { font-size: 13pt; color: #eaf4ff; letter-spacing: 0.35em; }
+  /* 主标题 */
+  h1 {
+    margin-top: 9mm;
+    font-size: 44pt;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: #f4faff;
+    text-shadow: 0 0 10mm rgba(140, 200, 255, 0.5);
+  }
+  /* 树图 */
+  .tree {
+    margin-top: 6mm;
+    width: 176mm;
+    height: 128mm;
+    object-fit: cover;
+    border-radius: 4mm;
+    box-shadow: 0 0 18mm rgba(80, 150, 230, 0.25);
+  }
+  /* 行动指令 */
+  .cta {
+    margin-top: 8mm;
+    font-size: 16.5pt;
+    letter-spacing: 0.18em;
+    color: rgba(234, 244, 255, 0.92);
+    text-align: center;
+    line-height: 1.9;
+  }
+  .cta strong { color: #ffe9c9; font-weight: 600; }
+  /* 底部：二维码 + 信息 */
+  .foot {
+    margin-top: auto;
+    margin-bottom: 12mm;
+    width: 176mm;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+  .meta { font-size: 9.5pt; color: rgba(191, 227, 255, 0.5); line-height: 2; letter-spacing: 0.1em; }
+  .meta .url { color: rgba(234, 244, 255, 0.85); font-size: 11pt; }
+  .qr { text-align: center; }
+  .qr img {
+    width: 34mm; height: 34mm;
+    border-radius: 2mm;
+    background: #fff;
+    padding: 2mm;
+    box-shadow: 0 0 10mm rgba(191, 227, 255, 0.35);
+  }
+  .qr .hint { margin-top: 2.5mm; font-size: 10pt; color: rgba(234, 244, 255, 0.8); letter-spacing: 0.15em; }
+</style>
+</head>
+<body>
+  <div class="brand">
+    <span class="dot"></span>
+    <span class="name">Mirror Me</span>
+    <span>与未来的自己对话</span>
+  </div>
+
+  <h1>你的故事，会长成树</h1>
+
+  <img class="tree" src="world-tree.png" alt="世界树" />
+
+  <div class="cta">
+    对它说一句心事，它当场长给你看。<br />
+    故事讲够了，<strong>未来的自己</strong>会来见你。
+  </div>
+
+  <div class="foot">
+    <div class="meta">
+      <div class="url">mirrorme.agentmkt.agency</div>
+      <div>世界引擎实时推演 · 每个数字都由引擎真算</div>
+      <div>github.com/noah-1106/mirror-me · MIT</div>
+    </div>
+    <div class="qr">
+      <img src="poster-qr.png" alt="扫码体验" />
+      <div class="hint">扫码，对树说一句话</div>
+    </div>
+  </div>
+</body>
+</html>
