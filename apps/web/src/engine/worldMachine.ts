@@ -34,7 +34,7 @@ export interface WorldContext {
   activeSelf: string;
   /** 每个"我"的可能性碎片（branchId → 标本文本） */
   fragments: Record<string, string>;
-  /** 叩门被拒次数（故事充分度不足）。怜悯规则：被拒 1 次后下次直接放行 */
+  /** 叩门被拒次数（故事充分度不足），仅用于树引导强度 */
   gateFails: number;
   /** 故事还不够具体：提示树在回应里温柔地邀请讲具体的事 */
   needsStory: boolean;
@@ -473,13 +473,8 @@ export const worldMachine = setup({
             actions: assign({ phase: 'finale', gateFails: 0, needsStory: false }),
           },
           {
-            // 怜悯规则：已被拒过一次的话这次直接放行——讲得少的孩子也配见到自己
-            guard: ({ context }) => context.gateFails >= 1,
-            target: 'finale',
-            actions: assign({ phase: 'finale', gateFails: 0, needsStory: false }),
-          },
-          {
-            // 故事还不够：回到倾听，树会温柔地邀请他讲具体的事
+            // 故事还不够：回到倾听，树会温柔地邀请他讲具体的事。
+            // 没有怜悯放行——没有故事的终局是空壳，门要自己挣，树负责指路。
             target: 'responding',
             actions: assign({
               phase: 'responding',
