@@ -7,6 +7,8 @@ export interface RespondInput {
   selfReferRate: number;
   /** 孩子最近说过的原话（按轮次） */
   history: string[];
+  /** 故事还不够具体：温柔地邀请他讲一件具体的事 */
+  needsStory?: boolean;
   /** 树的体感数据：轮次即树龄、枝数、展开的未来数 */
   treeStats: { t: number; branches: number; tips: number };
 }
@@ -113,6 +115,9 @@ export async function generateReply(input: RespondInput): Promise<string> {
       `引擎状态：我们对他的不了解还剩 ${Math.round(input.delta * 100)}%；`,
       `他的选择里 ${Math.round(input.selfReferRate * 100)}% 由自己驱动；`,
       `当前最不确定的维度是 ${input.mostUncertainDimension}（问题可指向它，但不要说出"维度"这个词）。`,
+      ...(input.needsStory
+        ? ['他讲得还有些模糊。温柔地邀请他讲一件具体的事——什么人、发生了什么。像随口一问，不要提"故事不够"。']
+        : []),
     ].join('\n');
   }
 

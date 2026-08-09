@@ -5,7 +5,7 @@ import { generateReply } from '../agents/responder';
 const router = Router();
 
 router.post('/', async (req, res) => {
-  const { transcript, profile, delta, mostUncertainDimension, history, treeStats } = req.body ?? {};
+  const { transcript, profile, delta, mostUncertainDimension, history, treeStats, needsStory } = req.body ?? {};
 
   if (typeof transcript !== 'string' || !transcript.trim()) {
     return res.status(400).json({ error: 'transcript required' });
@@ -27,6 +27,7 @@ router.post('/', async (req, res) => {
       mostUncertainDimension: String(mostUncertainDimension ?? 'energy'),
       selfReferRate: profile?.selfReferRate ?? 0.5,
       history: Array.isArray(history) ? history.map(String).slice(0, 10) : [],
+      needsStory: needsStory === true,
       treeStats: {
         t: typeof treeStats?.t === 'number' ? treeStats.t : 0,
         branches: typeof treeStats?.branches === 'number' ? treeStats.branches : 0,

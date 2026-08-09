@@ -34,6 +34,10 @@ export interface WorldContext {
   activeSelf: string;
   /** 每个"我"的可能性碎片（branchId → 标本文本） */
   fragments: Record<string, string>;
+  /** 叩门被拒次数（故事充分度不足）。怜悯规则：被拒 1 次后下次直接放行 */
+  gateFails: number;
+  /** 故事还不够具体：提示树在回应里温柔地邀请讲具体的事 */
+  needsStory: boolean;
   phase: WorldPhase;
 }
 
@@ -67,6 +71,8 @@ export const initialContext: WorldContext = {
   convergeCount: 0,
   activeSelf: '',
   fragments: {},
+  gateFails: 0,
+  needsStory: false,
   replyTurn: -1,
   phase: 'genesis',
 };
@@ -172,6 +178,7 @@ const respondActor = fromPromise(
       mostUncertainDimension: string;
       history: string[];
       treeStats: { t: number; branches: number; tips: number };
+      needsStory?: boolean;
     };
   }) => {
     // 测试/SSR 环境不走网络
@@ -429,6 +436,7 @@ export const worldMachine = setup({
             branches: context.tree.branches.filter((b) => b.displayed).length,
             tips: getTips(context.tree).filter((b) => b.displayed).length,
           },
+          needsStory: context.needsStory,
         }),
         onDone: {
           target: 'idle',
@@ -462,12 +470,22 @@ export const worldMachine = setup({
           {
             guard: ({ event }) => event.output.ready,
             target: 'finale',
-            actions: assign({ phase: 'finale' }),
+            actions: assign({ phase: 'finale', gateFails: 0, needsStory: false }),
           },
           {
-            // 故事还不够：回到倾听，让树继续长
+            // 怜悯规则：已被拒过一次的话这次直接放行——讲得少的孩子也配见到自己
+            guard: ({ context }) => context.gateFails >= 1,
+            target: 'finale',
+            actions: assign({ phase: 'finale', gateFails: 0, needsStory: false }),
+          },
+          {
+            // 故事还不够：回到倾听，树会温柔地邀请他讲具体的事
             target: 'responding',
-            actions: assign({ phase: 'responding' }),
+            actions: assign({
+              phase: 'responding',
+              gateFails: ({ context }) => context.gateFails + 1,
+              needsStory: true,
+            }),
           },
         ],
       },
