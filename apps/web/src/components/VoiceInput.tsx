@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { RED_DOT_TYPES } from '@oasis/shared';
 import { computeCandidates } from '../engine/selves';
 import { getProfile } from '../engine/session';
 import { useWorldState } from '../engine/useWorld';
@@ -134,18 +135,26 @@ export function VoiceInput() {
     }
   }, [phase, state, context.activeSelf, setFocusedSelf]);
 
-  // 当前聚焦的"我"的名签
+  // 当前聚焦的"我"的名签：红点模式 = "作品型的你"；自由模式 = 盆地枝色
   const focusedCandidate =
     phase === 'dialogue' && focusedSelf
       ? computeCandidates(context.tree, context.history).find((c) => c.branchId === focusedSelf)
       : undefined;
-  const selfLabel = focusedCandidate
-    ? focusedCandidate.withered
-      ? '灰烬枝上的你'
-      : focusedCandidate.basin === 'other'
-        ? '冷银枝上的你'
-        : '暖金枝上的你'
-    : '';
+  const focusedRedDot = focusedSelf
+    ? RED_DOT_TYPES.find((r) => r.id === context.selfRedDots[focusedSelf])
+    : undefined;
+  const selfLabel =
+    context.selfMode === 'reddot'
+      ? focusedRedDot
+        ? `${focusedRedDot.name}的你`
+        : ''
+      : focusedCandidate
+        ? focusedCandidate.withered
+          ? '灰烬枝上的你'
+          : focusedCandidate.basin === 'other'
+            ? '冷银枝上的你'
+            : '暖金枝上的你'
+        : '';
 
   // 字随声现：音频开始播放（或确定无声）才揭开文字；此前提示声音在凝聚
   const replyRevealed = context.replyTurn >= 0 && revealedTurn >= context.replyTurn;
@@ -166,6 +175,23 @@ export function VoiceInput() {
 
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex flex-col items-center gap-3 pb-8">
+      {phase === 'dialogue' && state !== 'summoning' && (
+        <div className="pointer-events-auto fixed inset-x-0 top-6 z-30 flex justify-center">
+          <div className="flex overflow-hidden rounded-full border border-white/10 bg-black/45 text-xs backdrop-blur-sm">
+            {(['reddot', 'free'] as const).map((m) => (
+              <button
+                key={m}
+                onClick={() => send({ type: 'TOGGLE_SELF_MODE', mode: m })}
+                className={`px-4 py-1.5 tracking-widest transition-colors ${
+                  context.selfMode === m ? 'bg-white/15 text-white' : 'text-white/40 hover:text-white/70'
+                }`}
+              >
+                {m === 'reddot' ? '红点模式' : '自由模式'}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       <div className="rounded-full bg-black/45 px-4 py-1.5 text-sm font-light tracking-widest text-white/50 backdrop-blur-sm">{hint}</div>
       {phase === 'idle' && (
         <div className="pointer-events-auto flex w-full max-w-xl items-center gap-3 px-6">

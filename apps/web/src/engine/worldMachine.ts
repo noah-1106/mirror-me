@@ -1,6 +1,6 @@
 import { assign, fromPromise, setup } from 'xstate';
 import type { Alarm, FProfile, TreeTopology, TurnRecord } from '@oasis/shared';
-import { applyGrowthEvent, createEmptyTree, getTips } from '@oasis/shared';
+import { applyGrowthEvent, createEmptyTree, getTips, RED_DOT_TYPES } from '@oasis/shared';
 import { scan } from '../agents/guanguan';
 import { converge, shouldConverge } from '../agents/lianlian';
 import { growthFromTurn, makeTurnRecord } from './growth';
@@ -34,6 +34,10 @@ export interface WorldContext {
   activeSelf: string;
   /** 每个"我"的可能性碎片（branchId → 标本文本） */
   fragments: Record<string, string>;
+  /** 每个"我"随机注入的红点特征（branchId → 红点 id，见 shared RED_DOT_TYPES） */
+  selfRedDots: Record<string, string>;
+  /** 终局模式：reddot = 红点名签+红点人设；free = 暖金/冷银/灰烬自由对话 */
+  selfMode: 'reddot' | 'free';
   /** 叩门被拒次数（故事充分度不足），仅用于树引导强度 */
   gateFails: number;
   /** 故事还不够具体：提示树在回应里温柔地邀请讲具体的事 */
@@ -48,6 +52,7 @@ export type WorldEvent =
   | { type: 'CONTINUE' } // 终局叩门时选择继续对话
   | { type: 'FINISH' } // 终局叩门时选择见未来的自己
   | { type: 'SELECT_SELF'; self: string } // 选择树梢上的某个"我"（真实枝 id）
+  | { type: 'TOGGLE_SELF_MODE'; mode: 'reddot' | 'free' } // 终局模式切换：红点 / 自由
   | { type: 'EXIT_DIALOGUE' }; // 离开终局对话，回到倾听
 
 const initialProfile: FProfile = {
@@ -71,6 +76,8 @@ export const initialContext: WorldContext = {
   convergeCount: 0,
   activeSelf: '',
   fragments: {},
+  selfRedDots: {},
+  selfMode: 'reddot',
   gateFails: 0,
   needsStory: false,
   replyTurn: -1,
@@ -153,6 +160,7 @@ const mirrorActor = fromPromise(
       delta: number;
       self: { basin: string; withered: boolean; story: string[] };
       fragment?: string;
+      redDot?: { name: string; essence: string };
     };
   }) => {
     if (typeof window === 'undefined') return { reply: OFFLINE_MIRROR_REPLY };
@@ -222,7 +230,7 @@ const fragmentActor = fromPromise(
   async ({
     input,
   }: {
-    input: { selves: { branchId: string; basin: string; withered: boolean; story: string[] }[] };
+    input: { selves: { branchId: string; basin: string; withered: boolean; story: string[]; redDot?: { name: string; essence: string } }[] };
   }) => {
     const fragments: Record<string, string> = {};
     if (typeof window === 'undefined') return { fragments };
@@ -232,7 +240,7 @@ const fragmentActor = fromPromise(
           const res = await fetch('/api/fragment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ basin: s.basin, withered: s.withered, story: s.story }),
+            body: JSON.stringify({ basin: s.basin, withered: s.withered, story: s.story, redDot: s.redDot }),
           });
           const data = await res.json();
           if (typeof data?.fragment === 'string' && data.fragment) {
@@ -496,6 +504,16 @@ export const worldMachine = setup({
             activeSelf: ({ context }) =>
               pickDiverseSelves(computeCandidates(context.tree, context.history))[0]?.branchId ??
               '',
+            // 每个"我"随机注入一个互不重复的红点特征（可能性风味，非诊断）
+            selfRedDots: ({ context }) => {
+              const selves = pickDiverseSelves(computeCandidates(context.tree, context.history));
+              const pool = [...RED_DOT_TYPES].sort(() => Math.random() - 0.5);
+              const map: Record<string, string> = {};
+              selves.forEach((s, i) => {
+                map[s.branchId] = pool[i % pool.length].id;
+              });
+              return map;
+            },
           }),
         },
       },
@@ -510,6 +528,7 @@ export const worldMachine = setup({
             basin: s.basin,
             withered: s.withered,
             story: s.story,
+            redDot: RED_DOT_TYPES.find((r) => r.id === context.selfRedDots[s.branchId]),
           })),
         }),
         onDone: {
@@ -526,6 +545,9 @@ export const worldMachine = setup({
         EXIT_DIALOGUE: { target: 'idle', actions: assign({ phase: 'idle' }) },
         SELECT_SELF: {
           actions: assign({ activeSelf: ({ event }) => event.self }),
+        },
+        TOGGLE_SELF_MODE: {
+          actions: assign({ selfMode: ({ event }) => event.mode }),
         },
         VOICE_TURN: {
           target: 'dialogueTurn',
@@ -557,6 +579,10 @@ export const worldMachine = setup({
               ? { basin: self.basin, withered: self.withered, story: self.story }
               : { basin: 'self' as const, withered: false, story: [] },
             fragment: context.fragments[context.activeSelf],
+            redDot:
+              context.selfMode === 'reddot'
+                ? RED_DOT_TYPES.find((r) => r.id === context.selfRedDots[context.activeSelf])
+                : undefined,
           };
         },
         onDone: {

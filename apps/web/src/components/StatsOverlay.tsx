@@ -47,7 +47,7 @@ export function StatsOverlay() {
   if (phase === 'genesis') return null;
 
   return (
-    <div className="pointer-events-none absolute bottom-6 right-6 z-20 space-y-2 text-right font-extralight text-white/60">
+    <div className="pointer-events-none absolute bottom-6 right-6 z-20 space-y-2 text-right font-extralight text-white/60 portrait:hidden">
       <div className="text-sm">
         你亲手点亮的可能{' '}
         <span className="text-xl text-white">{lit}</span> 条

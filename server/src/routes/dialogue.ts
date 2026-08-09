@@ -5,7 +5,7 @@ import { generateMirrorReply } from '../agents/mirror';
 const router = Router();
 
 router.post('/', async (req, res) => {
-  const { message, history, profile, delta, self, fragment } = req.body ?? {};
+  const { message, history, profile, delta, self, fragment, redDot } = req.body ?? {};
 
   if (typeof message !== 'string' || !message.trim()) {
     return res.status(400).json({ error: 'message required' });
@@ -31,6 +31,10 @@ router.post('/', async (req, res) => {
         story: Array.isArray(self?.story) ? self.story.map(String).slice(0, 10) : [],
       },
       fragment: typeof fragment === 'string' ? fragment.slice(0, 200) : undefined,
+      redDot:
+        redDot && typeof redDot.name === 'string' && typeof redDot.essence === 'string'
+          ? { name: redDot.name.slice(0, 10), essence: redDot.essence.slice(0, 60) }
+          : undefined,
     });
     res.json({ fused: false, reply });
   } catch (err) {

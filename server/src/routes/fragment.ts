@@ -25,8 +25,9 @@ export async function generateFragment(input: {
   basin: string;
   withered: boolean;
   story: string[];
+  redDot?: { name: string; essence: string };
 }): Promise<string> {
-  const key = cacheKey(input.basin, input.withered, input.story);
+  const key = cacheKey(input.basin, input.withered, input.story) + (input.redDot?.name ?? '');
   const cached = fragmentCache.get(key);
   if (cached !== undefined) return cached;
 
@@ -40,7 +41,7 @@ export async function generateFragment(input: {
         { role: 'system', content: SYSTEM },
         {
           role: 'user',
-          content: `盆地：${input.basin}${input.withered ? '（枯枝）' : ''}\n孩子说过的话：${input.story.map((s) => `「${s}」`).join('、')}`,
+          content: `盆地：${input.basin}${input.withered ? '（枯枝）' : ''}${input.redDot ? `\n红点倾向：${input.redDot.name}——${input.redDot.essence}（这种可能的生活要往这个方向写）` : ''}\n孩子说过的话：${input.story.map((s) => `「${s}」`).join('、')}`,
         },
       ],
       max_tokens: 2000, // 推理模型先烧 token 思考（长 system prompt 会思考更久），给足余量
@@ -55,11 +56,15 @@ export async function generateFragment(input: {
 }
 
 router.post('/', async (req, res) => {
-  const { basin, withered, story } = req.body ?? {};
+  const { basin, withered, story, redDot } = req.body ?? {};
   const fragment = await generateFragment({
     basin: typeof basin === 'string' ? basin : 'self',
     withered: withered === true,
     story: Array.isArray(story) ? story.map(String).slice(0, 10) : [],
+    redDot:
+      redDot && typeof redDot.name === 'string' && typeof redDot.essence === 'string'
+        ? { name: redDot.name.slice(0, 10), essence: redDot.essence.slice(0, 60) }
+        : undefined,
   });
   res.json({ fragment });
 });

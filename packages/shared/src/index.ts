@@ -144,3 +144,23 @@ export interface TreeTopology {
 }
 
 export * from './tree';
+
+/** 九种人生红点（Truman 课程框架）：终局取舍象限 = 追求结果/过程 × 现实/理想 */
+export interface RedDotType {
+  id: string;
+  name: string;
+  /** 一句话本质（mirror 人设/碎片生成用） */
+  essence: string;
+}
+
+export const RED_DOT_TYPES: RedDotType[] = [
+  { id: 'money', name: '赚钱型', essence: '终局是财富本身——有钱，且越来越有钱' },
+  { id: 'fame', name: '出名型', essence: '终局是被看见——名气、影响力、说话有人听' },
+  { id: 'vision', name: '愿景型', essence: '终局是改变世界——让某件事因为自己而不同' },
+  { id: 'work', name: '作品型', essence: '终局是作品——很多年后还有人因它受益' },
+  { id: 'life', name: '生活型', essence: '终局是生活本身——安稳、幸福、有质量的日子' },
+  { id: 'experience', name: '体验型', essence: '终局是体验的丰富度——看过、玩过、活过' },
+  { id: 'process', name: '过程型', essence: '终局是在路上的意义感——攀登本身就是答案' },
+  { id: 'inner', name: '内心型', essence: '终局是内心的丰盈与平静——自洽、精神富足' },
+  { id: 'master', name: '高手型', essence: '终局是把一门手艺练到极致——领域里绕不开的人' },
+];
