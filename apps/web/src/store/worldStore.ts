@@ -23,6 +23,8 @@ export interface VisualState {
   focusedSelf: string | null;
   /** 已揭开文字的 reply 轮次：音频开始播放（或确定无声）时才揭开，字随声现 */
   revealedTurn: number;
+  /** 本轮会话是否用过语音输入（没用过则人声通道整体跳过，文字不等声音） */
+  usedVoice: boolean;
 }
 
 export interface WorldStore extends VisualState {
@@ -39,6 +41,7 @@ export interface WorldStore extends VisualState {
   setActor: (actor: WorldActor) => void;
   setFocusedSelf: (branchId: string | null) => void;
   setRevealedTurn: (t: number) => void;
+  setUsedVoice: () => void;
 }
 
 // 模块级防重入：动态 import 窗口期内 actor 仍是 null，同步 guard 挡不住重复初始化
@@ -66,6 +69,7 @@ export const useWorldStore = create<WorldStore>((set, get) => ({
   actor: null,
   focusedSelf: null,
   revealedTurn: -1,
+  usedVoice: false,
   setPhase: (phase) => set({ phase }),
   setR: (R) => set({ R }),
   setDelta: (delta) => set({ delta }),
@@ -95,4 +99,5 @@ export const useWorldStore = create<WorldStore>((set, get) => ({
   setActor: (actor) => set({ actor }),
   setFocusedSelf: (focusedSelf) => set({ focusedSelf }),
   setRevealedTurn: (revealedTurn) => set({ revealedTurn }),
+  setUsedVoice: () => set({ usedVoice: true }),
 }));

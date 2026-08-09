@@ -30,6 +30,7 @@ export function VoiceInput() {
   const focusedSelf = useWorldStore((s) => s.focusedSelf);
   const setFocusedSelf = useWorldStore((s) => s.setFocusedSelf);
   const revealedTurn = useWorldStore((s) => s.revealedTurn);
+  const setUsedVoice = useWorldStore((s) => s.setUsedVoice);
   const [text, setText] = useState('');
   const [recording, setRecording] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(MAX_RECORD_SECONDS);
@@ -95,6 +96,7 @@ export function VoiceInput() {
           const data = await res.json();
           if (data.text?.trim()) {
             setText(data.text);
+            setUsedVoice();
             submit(data.text, durationMs);
           } else {
             setMicError('没听清，再说一次试试？');
