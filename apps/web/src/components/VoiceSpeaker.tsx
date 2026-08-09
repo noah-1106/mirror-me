@@ -19,9 +19,14 @@ export function VoiceSpeaker() {
     if (!context.reply || context.replyTurn === spokenTurn.current) return;
     spokenTurn.current = context.replyTurn;
     const turn = context.replyTurn;
+    // 字随声现，但封顶 6 秒：本地复刻合成可能 30s+，不能让文字被声音扣为人质
+    const fallback = setTimeout(() => setRevealedTurn(turn), 6000);
     speak(context.reply, {
       vocalise: context.phase !== 'dialogue',
-      onReady: () => setRevealedTurn(turn),
+      onReady: () => {
+        clearTimeout(fallback);
+        setRevealedTurn(turn);
+      },
     });
   }, [context.reply, context.replyTurn, context.phase, setRevealedTurn]);
 
